@@ -20,6 +20,8 @@ on init
     mkdir /sd-ext
 
     mkdir /mnt 0775 root root
+    
+    symlink /datadata /dbdata
 
 on early-fs
 
