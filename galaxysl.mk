@@ -127,7 +127,9 @@ PRODUCT_PACKAGES := \
     utility_make_ext4fs \
     bootmenu_busybox \
     SamsungServiceMode \
-    DeviceParts
+    DeviceParts \
+    SoundRecorder \
+    VoiceDialer
 
 # ICS sound
 PRODUCT_PACKAGES += \
