@@ -135,7 +135,7 @@ set_light_notification(struct light_device_t* dev,
 {
     int err = 0;
 	int brightness = rgb_to_brightness(state);
-
+    int v = 0;
 
     // use the button backlight as notification led
     pthread_mutex_lock(&g_lock);
@@ -144,12 +144,16 @@ set_light_notification(struct light_device_t* dev,
     {
         if (state->color & 0x00ffffff)
         {
-                LOGD("set_light_notification ON\n");
-  		err = write_int(BUTTON_FILE, 255);
+            v = 100;
         }
     } 
+    else 
+    {
+            v = 0;
+    }
 
-
+    LOGD("set_light_notification on=%d\n", v);
+    err = write_int(BUTTON_FILE, v);
     pthread_mutex_unlock(&g_lock);
 
     return err;
