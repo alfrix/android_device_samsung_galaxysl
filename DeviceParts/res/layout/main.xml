@@ -21,7 +21,7 @@ android:entries="@array/hspa_entries"
 	        android:summary="@string/backlight_timeout_summary_head"
 	        android:entries="@array/backlight_timeout_entries"
   			android:entryValues="@array/backlight_timeout_entries_values"
-  			android:defaultValue="1600" />
+  			android:defaultValue="6000" />
 </PreferenceCategory>
 <!-- Vibration Intensity settings -->
 <PreferenceCategory
