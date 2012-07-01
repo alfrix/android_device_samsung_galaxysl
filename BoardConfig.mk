@@ -24,6 +24,11 @@ BOARD_KERNEL_BASE := 0x10000000
 BOARD_PAGE_SIZE := 4096
 
 BOARD_CUSTOM_BOOTIMG_MK := device/samsung/galaxysl/shbootimg.mk
+
+# Define kernel config for inline building
+TARGET_KERNEL_CONFIG := latona_galaxysl_defconfig
+TARGET_KERNEL_SOURCE := kernel/samsung/latona
+# Fallback to prebuilt
 TARGET_PREBUILT_KERNEL := device/samsung/galaxysl/kernel
 
 # recovery
