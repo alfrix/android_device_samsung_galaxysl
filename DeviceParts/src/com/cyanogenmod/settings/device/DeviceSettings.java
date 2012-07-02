@@ -8,9 +8,11 @@ public class DeviceSettings extends PreferenceActivity {
 
     public static final String KEY_HSPA = "hspa";
     public static final String KEY_BACKLIGHT_TIMEOUT = "backlight_timeout";
+    public static final String KEY_BACKLIGHT_THRESHOLD = "backlight_threshold";
 
     private ListPreference mHspa;
     private ListPreference mBacklightTimeout;
+    private ListPreference mBacklightThreshold;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,10 @@ public class DeviceSettings extends PreferenceActivity {
         mBacklightTimeout = (ListPreference) findPreference(KEY_BACKLIGHT_TIMEOUT);
         mBacklightTimeout.setEnabled(TouchKeyBacklightTimeout.isSupported());
         mBacklightTimeout.setOnPreferenceChangeListener(new TouchKeyBacklightTimeout());
+        
+        mBacklightThreshold = (ListPreference) findPreference(KEY_BACKLIGHT_THRESHOLD);
+        mBacklightThreshold.setEnabled(TouchKeyBacklightThreshold.isSupported());
+        mBacklightThreshold.setOnPreferenceChangeListener(new TouchKeyBacklightThreshold());
 
     }
 

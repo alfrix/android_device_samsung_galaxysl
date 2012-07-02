@@ -29,6 +29,26 @@
         <item>-1</item>
     </string-array>
     
+        <string-array name="backlight_threshold_entries">
+        <item>Default (200 lux)</item>
+        <item>50 lux</item>
+        <item>75 lux</item>
+        <item>100 lux</item>
+        <item>250 lux</item>
+        <item>500 lux</item>
+        <item>Disabled</item>
+    </string-array>
+
+    <string-array name="backlight_threshold_entries_values" translatable="false">
+        <item>200</item>
+        <item>50</item>
+        <item>75</item>
+        <item>100</item>
+        <item>250</item>
+        <item>500</item>
+        <item>0</item>
+    </string-array>
+    
     <string-array name="hspa_entries_values" translatable="false">
         <item>21</item>
         <item>22</item>

@@ -14,5 +14,7 @@
     <string name="category_touchkey_title">Touch Keys</string>
     <string name="backlight_timeout_title_head">Backlight Timeout</string>
     <string name="backlight_timeout_summary_head">Adjust the delay before the touch key backlight automatically turns off</string>
+    <string name="backlight_threshold_title_head">Backlight Threshold</string>
+    <string name="backlight_threshold_summary_head">Adjust the amount of ambient light needed to automatically deactivate touch key backlight</string>
     
 </resources>

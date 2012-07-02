@@ -11,5 +11,6 @@ public class Startup extends BroadcastReceiver {
         Hspa.restore(context);
         VibrationIntensity.restore(context);
         TouchKeyBacklightTimeout.restore(context);
+        TouchKeyBacklightThreshold.restore(context);
     }
 }

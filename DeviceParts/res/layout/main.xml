@@ -22,6 +22,14 @@ android:entries="@array/hspa_entries"
 	        android:entries="@array/backlight_timeout_entries"
   			android:entryValues="@array/backlight_timeout_entries_values"
   			android:defaultValue="6000" />
+	    <!-- Touch key backlight ambient light_threshold -->
+	    <ListPreference 
+	        android:key="backlight_threshold"
+	        android:title="@string/backlight_threshold_title_head"
+	        android:summary="@string/backlight_threshold_summary_head"
+	        android:entries="@array/backlight_threshold_entries"
+  			android:entryValues="@array/backlight_threshold_entries_values"
+  			android:defaultValue="200" />
 </PreferenceCategory>
 <!-- Vibration Intensity settings -->
 <PreferenceCategory
