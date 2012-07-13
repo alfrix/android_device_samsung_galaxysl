@@ -65,7 +65,7 @@ write_int(char const* path, int value)
         return amt == -1 ? -errno : 0;
     } else {
         if (already_warned == 0) {
-            LOGE("write_int failed to open %s\n", path);
+            ALOGE("write_int failed to open %s\n", path);
             already_warned = 1;
         }
         return -errno;
@@ -123,7 +123,7 @@ set_light_notification(struct light_device_t* dev,
             v = 0;
     }
 
-    LOGD("set_light_notification on=%d\n", v);
+    ALOGD("set_light_notification on=%d\n", v);
     err = write_int(BUTTON_FILE, v);
     pthread_mutex_unlock(&g_lock);
 
