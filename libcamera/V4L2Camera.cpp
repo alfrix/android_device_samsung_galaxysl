@@ -206,7 +206,7 @@ int V4L2Camera::Open(const char *device)
 	do
 	{
 		if ((camHandle = open(device, O_RDWR)) == -1) {
-			LOGE("ERROR opening V4L interface: %s", strerror(errno));
+			ALOGE("ERROR opening V4L interface: %s", strerror(errno));
 			if(version >= KERNEL_VERSION(2,6,37))
 				reset_links(MEDIA_DEVICE);
 			return -1;
@@ -215,7 +215,7 @@ int V4L2Camera::Open(const char *device)
 		{
 			ccdc_fd = open("/dev/v4l-subdev2", O_RDWR);
 			if(ccdc_fd == -1) {
-				LOGE("Error opening ccdc device");
+				ALOGE("Error opening ccdc device");
 				close(camHandle);
 				reset_links(MEDIA_DEVICE);
 				return -1;
@@ -230,7 +230,7 @@ int V4L2Camera::Open(const char *device)
 			ret = ioctl(ccdc_fd, VIDIOC_SUBDEV_S_FMT, &fmt);
 			if(ret < 0)
 			{
-				LOGE("Failed to set format on pad");
+				ALOGE("Failed to set format on pad");
 			}
 			memset(&fmt, 0, sizeof(fmt));
 			fmt.pad = 1;
@@ -242,7 +242,7 @@ int V4L2Camera::Open(const char *device)
 			fmt.format.field = V4L2_FIELD_INTERLACED;
 			ret = ioctl(ccdc_fd, VIDIOC_SUBDEV_S_FMT, &fmt);
 			if(ret) {
-				LOGE("Failed to set format on pad");
+				ALOGE("Failed to set format on pad");
 			}
 			mediaIn->input_source=1;
 			if (mediaIn->input_source != 0)
@@ -251,7 +251,7 @@ int V4L2Camera::Open(const char *device)
 				strcpy(subdev, "/dev/v4l-subdev9");
 			tvp_fd = open(subdev, O_RDWR);
 			if(tvp_fd == -1) {
-				LOGE("Failed to open subdev");
+				ALOGE("Failed to open subdev");
 				ret=-1;
 				close(camHandle);
 				reset_links(MEDIA_DEVICE);
@@ -261,18 +261,18 @@ int V4L2Camera::Open(const char *device)
 
 		ret = ioctl (camHandle, VIDIOC_QUERYCAP, &videoIn->cap);
 		if (ret < 0) {
-			LOGE("Error opening device: unable to query device.");
+			ALOGE("Error opening device: unable to query device.");
 			break;
 		}
 
 		if ((videoIn->cap.capabilities & V4L2_CAP_VIDEO_CAPTURE) == 0) {
-			LOGE("Error opening device: video capture not supported.");
+			ALOGE("Error opening device: video capture not supported.");
 			ret = -1;
 			break;
 		}
 
 		if (!(videoIn->cap.capabilities & V4L2_CAP_STREAMING)) {
-			LOGE("Capture device does not support streaming i/o");
+			ALOGE("Capture device does not support streaming i/o");
 			ret = -1;
 			break;
 		}
@@ -299,7 +299,7 @@ int V4L2Camera::Open_media_device(const char *device)
 	mediaIn->media_fd = open(device, O_RDWR);
 	if(mediaIn->media_fd <= 0)
 	{
-		LOGE("ERROR opening media device: %s",strerror(errno));
+		ALOGE("ERROR opening media device: %s",strerror(errno));
 		return -1;
 	}
 
@@ -331,7 +331,7 @@ int V4L2Camera::Open_media_device(const char *device)
 	}while(ret==0);
 
 	if ((ret < 0) && (index <= 0)) {
-		LOGE("Failed to enumerate entities ret val is %d",ret);
+		ALOGE("Failed to enumerate entities ret val is %d",ret);
 		close(mediaIn->media_fd);
 		return -1;
 	}
@@ -344,22 +344,22 @@ int V4L2Camera::Open_media_device(const char *device)
 		links.links = (struct media_link_desc *) malloc((sizeof(struct media_link_desc)) * mediaIn->entity[index].links);
 		ret = ioctl(mediaIn->media_fd, MEDIA_IOC_ENUM_LINKS, &links);
 		if (ret < 0) {
-			LOGE("ERROR  while enumerating links/pads");
+			ALOGE("ERROR  while enumerating links/pads");
 			break;
 		}
 		else {
 			if(mediaIn->entity[index].pads)
-				LOGD("pads for entity %d=", mediaIn->entity[index].id);
+				ALOGD("pads for entity %d=", mediaIn->entity[index].id);
 			for(i = 0 ; i < mediaIn->entity[index].pads; i++) {
-				LOGD("(%d %s) ", links.pads->index,(links.pads->flags & MEDIA_PAD_FLAG_INPUT) ?"INPUT" : "OUTPUT");
+				ALOGD("(%d %s) ", links.pads->index,(links.pads->flags & MEDIA_PAD_FLAG_INPUT) ?"INPUT" : "OUTPUT");
 				links.pads++;
 			}
 			for(i = 0; i < mediaIn->entity[index].links; i++) {
-				LOGD("[%d:%d]===>[%d:%d]",links.links->source.entity,links.links->source.index,links.links->sink.entity,links.links->sink.index);
+				ALOGD("[%d:%d]===>[%d:%d]",links.links->source.entity,links.links->source.index,links.links->sink.entity,links.links->sink.index);
 				if(links.links->flags & MEDIA_LINK_FLAG_ENABLED)
-					LOGD("\tACTIVE\n");
+					ALOGD("\tACTIVE\n");
 				else
-					LOGD("\tINACTIVE \n");
+					ALOGD("\tINACTIVE \n");
 				links.links++;
 			}
 		}
@@ -383,7 +383,7 @@ int V4L2Camera::Open_media_device(const char *device)
 
 	ret = ioctl(mediaIn->media_fd, MEDIA_IOC_SETUP_LINK, &link);
 	if(ret) {
-		LOGE("Failed to enable link bewteen entities");
+		ALOGE("Failed to enable link bewteen entities");
 		close(mediaIn->media_fd);
 		return -1;
 	}
@@ -397,7 +397,7 @@ int V4L2Camera::Open_media_device(const char *device)
 	link.sink.flags = MEDIA_PAD_FLAG_INPUT;
 	ret = ioctl(mediaIn->media_fd, MEDIA_IOC_SETUP_LINK, &link);
 	if(ret){
-		LOGE("Failed to enable link");
+		ALOGE("Failed to enable link");
 
 		close(mediaIn->media_fd);
 		return -1;
@@ -440,10 +440,10 @@ int V4L2Camera::Configure(int width,int height,int pixelformat,int fps,int cam_m
 	{
 		ret = ioctl(camHandle, VIDIOC_S_FMT, &videoIn->format);
 		if (ret < 0) {
-			LOGE("Open: VIDIOC_S_FMT Failed: %s", strerror(errno));
+			ALOGE("Open: VIDIOC_S_FMT Failed: %s", strerror(errno));
 			break;
 		}
-		LOGD("CameraConfigure PreviewFormat: w=%d h=%d", videoIn->format.fmt.pix.width, videoIn->format.fmt.pix.height);
+		ALOGD("CameraConfigure PreviewFormat: w=%d h=%d", videoIn->format.fmt.pix.width, videoIn->format.fmt.pix.height);
 
 	}while(0);
 
@@ -568,7 +568,7 @@ void V4L2Camera::Close ()
     	if (m_flag_init) {
     		close(camHandle);
     		camHandle = NULL;
-		LOGD("Camera Driver Closed");
+		ALOGD("Camera Driver Closed");
 #ifdef _OMAP_RESIZER_
     		OMAPResizerClose(videoIn->resizeHandle);
     		videoIn->resizeHandle = -1;
@@ -720,7 +720,7 @@ void V4L2Camera::GrabRawFrame(void *previewBuffer,unsigned int width, unsigned i
 	    ALOGV("postGrabRawFrame: Drop the frame");
 		ret = ioctl(camHandle, VIDIOC_QBUF, &videoIn->buf);
 		if (ret < 0) {
-			LOGE("postGrabRawFrame: VIDIOC_QBUF Failed");
+			ALOGE("postGrabRawFrame: VIDIOC_QBUF Failed");
 			return;
 		}
     }
@@ -787,7 +787,7 @@ camera_memory_t* V4L2Camera::GrabJpegFrame (camera_request_memory mRequestMemory
 		/* Dequeue buffer */
 		ret = ioctl(camHandle, VIDIOC_DQBUF, &videoIn->buf);
 		if (ret < 0) {
-			LOGE("GrabJpegFrame: VIDIOC_DQBUF Failed");
+			ALOGE("GrabJpegFrame: VIDIOC_DQBUF Failed");
 			break;
 		}
 		nDequeued++;
@@ -795,16 +795,16 @@ camera_memory_t* V4L2Camera::GrabJpegFrame (camera_request_memory mRequestMemory
 		//Latona Front Camera doesn't support Image Processing. Manually Encode the JPEG
 		if(IsFrontCam)		
 		{	
-			LOGD("YUVU Format - savePicture");
+			ALOGD("YUVU Format - savePicture");
 			fileSize = savePicture((unsigned char *)videoIn->mem[videoIn->buf.index], outputBuffer);
 		}
 
-		LOGD("GrabJpegFrame - Enqueue buffer");
+		ALOGD("GrabJpegFrame - Enqueue buffer");
 
 		/* Enqueue buffer */
 		ret = ioctl(camHandle, VIDIOC_QBUF, &videoIn->buf);
 		if (ret < 0) {
-			LOGE("GrabJpegFrame: VIDIOC_QBUF Failed");
+			ALOGE("GrabJpegFrame: VIDIOC_QBUF Failed");
 			break;
 		}
 		nQueued++;
@@ -833,7 +833,7 @@ int V4L2Camera::GetJpegImageSize()
 	vc.value=0;
 	if(ioctl(camHandle,VIDIOC_G_CTRL,&vc) < 0)
 	{
-		LOGE ("Failed to get VIDIOC_G_CTRL.\n");
+		ALOGE ("Failed to get VIDIOC_G_CTRL.\n");
 		return -1;
 	}
 	return (vc.value);
@@ -845,7 +845,7 @@ int V4L2Camera::GetThumbNailOffset()
 	vc.value=0;
 	if(ioctl(camHandle,VIDIOC_G_CTRL,&vc) < 0)
 	{
-		LOGE ("Failed to get VIDIOC_G_CTRL.\n");
+		ALOGE ("Failed to get VIDIOC_G_CTRL.\n");
 		return -1;
 	}
 	return(vc.value);
@@ -858,7 +858,7 @@ int V4L2Camera::GetYUVOffset()
 	vc.value=0;
 	if(ioctl(camHandle,VIDIOC_G_CTRL,&vc) < 0)
 	{
-		LOGE ("Failed to get VIDIOC_G_CTRL.");
+		ALOGE ("Failed to get VIDIOC_G_CTRL.");
 		return -1;
 	}
 	return(vc.value);
@@ -870,7 +870,7 @@ int V4L2Camera::GetThumbNailDataSize()
 	vc.value=0;
 	if(ioctl(camHandle,VIDIOC_G_CTRL,&vc) < 0)
 	{
-		LOGE ("Failed to get VIDIOC_G_CTRL.");
+		ALOGE ("Failed to get VIDIOC_G_CTRL.");
 		return -1;
 	}
 	return(vc.value);
@@ -882,7 +882,7 @@ int V4L2Camera::GetJPEG_Capture_Width()
 		vc.value=0;
 		if(ioctl(camHandle,VIDIOC_G_CTRL,&vc) < 0)
 		{
-			LOGE ("Failed to get VIDIOC_G_CTRL.\n");
+			ALOGE ("Failed to get VIDIOC_G_CTRL.\n");
 			return -1;
 		}
 		return(vc.value);
@@ -895,7 +895,7 @@ int V4L2Camera::GetJPEG_Capture_Height()
 		vc.value=0;
 		if(ioctl(camHandle,VIDIOC_G_CTRL,&vc) < 0)
 		{
-			LOGE ("Failed to get VIDIOC_G_CTRL.\n");
+			ALOGE ("Failed to get VIDIOC_G_CTRL.\n");
 			return -1;
 		}
 		return(vc.value);
@@ -908,7 +908,7 @@ int V4L2Camera::GetCamera_version()
 		vc.value = 0;
 		if (ioctl (camHandle, VIDIOC_G_CTRL, &vc) < 0)
 		{
-			LOGE("Failed to get V4L2_CID_FW_VERSION.\n");
+			ALOGE("Failed to get V4L2_CID_FW_VERSION.\n");
 		}
 
 		return (vc.value);
@@ -919,7 +919,7 @@ void V4L2Camera::getExifInfoFromDriver(v4l2_exif* exifobj)
 {
 	if(ioctl(camHandle,VIDIOC_G_EXIF,exifobj) < 0)
 	{
-		LOGE ("Failed to get vidioc_g_exif.\n");
+		ALOGE ("Failed to get vidioc_g_exif.\n");
 	}
 }
 
@@ -1143,7 +1143,7 @@ int V4L2Camera::cancelAutofocus(void)
     if(mAutofocusRunning)
     {
     	if (v4l2_s_ctrl(camHandle, V4L2_CID_AF, AF_STOP) < 0) {
-        	LOGE("ERR(%s):Fail on V4L2_CID_CAMERA_SET_AUTO_FOCUS", __func__);
+        	ALOGE("ERR(%s):Fail on V4L2_CID_CAMERA_SET_AUTO_FOCUS", __func__);
         	return -1;
     	}
     }
@@ -1268,7 +1268,7 @@ int V4L2Camera::setAEAWBLockUnlock(int ae_lockunlock, int awb_lockunlock)
 
 		if (ioctl(camHandle, VIDIOC_S_CTRL ,&vc) < 0) 
 		{
-			LOGE("ERR(%s):Fail on V4L2_CID_CAMERA_AE_AWB_LOCKUNLOCK", __func__);
+			ALOGE("ERR(%s):Fail on V4L2_CID_CAMERA_AE_AWB_LOCKUNLOCK", __func__);
 			return -1;
 		}
 

@@ -282,32 +282,32 @@ int CameraHardware::get_kernel_version()
 	int major,minor,rev,ver=-1;
 	if ((verstring = (char *) malloc(MAX_STR_LEN)) == NULL )
 	{
-		LOGE("Failed to allocate memory\n");
+		ALOGE("Failed to allocate memory\n");
 		return -1;
 	}
 	if ((dummy = (char *) malloc(MAX_STR_LEN)) == NULL )
 	{
-		LOGE("Failed to allocate memory\n");
+		ALOGE("Failed to allocate memory\n");
 		free (verstring);
 		return -1;
 	}
 
 	if ((fd = open("/proc/version", O_RDONLY)) < 0)
 	{
-		LOGE("Failed to open file /proc/version\n");
+		ALOGE("Failed to open file /proc/version\n");
 		goto ret;
 	}
 
 	if (read(fd, verstring, MAX_STR_LEN) < 0)
 	{
-		LOGE("Failed to read kernel version string from /proc/version file\n");
+		ALOGE("Failed to read kernel version string from /proc/version file\n");
 		close(fd);
 		goto ret;
 	}
 	close(fd);
 	if (sscanf(verstring, "%s %s %d.%d.%d%s\n", dummy, dummy, &major, &minor, &rev, dummy) != 6)
 	{
-		LOGE("Failed to read kernel version numbers\n");
+		ALOGE("Failed to read kernel version numbers\n");
 		goto ret;
 	}
 	ver = KERNEL_VERSION(major, minor, rev);
@@ -389,19 +389,19 @@ int CameraHardware::setPreviewWindow( preview_stream_ops_t *window)
 
 void CameraHardware::enableMsgType(int32_t msgType)
 {
-	LOGV("enableMsgType:%d",msgType);
+	ALOGV("enableMsgType:%d",msgType);
     mMsgEnabled |= msgType;
 }
 
 void CameraHardware::disableMsgType(int32_t msgType)
 {
-	LOGV("disableMsgType:%d",msgType);
+	ALOGV("disableMsgType:%d",msgType);
     mMsgEnabled &= ~msgType;
 }
 
 bool CameraHardware::msgTypeEnabled(int32_t msgType)
 {
-	LOGV("msgTypeEnabled:%d",msgType);
+	ALOGV("msgTypeEnabled:%d",msgType);
     return (mMsgEnabled & msgType);
 }
 
@@ -534,7 +534,7 @@ status_t CameraHardware::startPreview()
 		fps=15;
 	ret = mCamera->Configure(mPreviewWidth,mPreviewHeight,PIXEL_FORMAT,fps,0);
     	if(ret < 0) {
-	    	LOGE("Fail to configure camera device");
+	    	ALOGE("Fail to configure camera device");
 	    	return INVALID_OPERATION;
     }
    //dhiru1602 : Set FFC Flip
@@ -597,24 +597,24 @@ void CameraHardware::stopPreview()
         Mutex::Autolock lock(mPreviewLock);
         previewStopped = true;
         previewThread = mPreviewThread;
-	LOGV("scope for the lock");
+	ALOGV("scope for the lock");
     }
 
     /* don't hold the lock while waiting for the thread to quit */
 	if (previewThread != 0) {
 		previewThread->requestExitAndWait();
-		LOGV("previewThread->requestExitAndWait();");
+		ALOGV("previewThread->requestExitAndWait();");
 	}
 
     if (mPreviewThread != 0) {
         mCamera->Uninit(0);
         mCamera->StopStreaming();
-	LOGV(" mCamera->StopStreaming();");
+	ALOGV(" mCamera->StopStreaming();");
     }
 
     Mutex::Autolock lock(mPreviewLock);
     mPreviewThread.clear();
-	LOGV("return");
+	ALOGV("return");
     return;
 }
 
@@ -793,7 +793,7 @@ int CameraHardware::pictureThread()
     }
     ret = mCamera->Configure(width,height,pixelformat,fps,1);
     	if(ret < 0) {
-	    	LOGE("Fail to configure camera device");
+	    	ALOGE("Fail to configure camera device");
 	    	return INVALID_OPERATION;
     }
    //dhiru1602 : Set FFC Flip
@@ -892,20 +892,20 @@ status_t CameraHardware::setParameters(const CameraParameters& params)
 	int ret;
 	params.getPreviewSize(&width,&height);
 
-	LOGV("Set Parameter...!! ");
+	ALOGV("Set Parameter...!! ");
 
-	LOGV("PreviewFormat %s", params.getPreviewFormat());
+	ALOGV("PreviewFormat %s", params.getPreviewFormat());
 	if ( params.getPreviewFormat() != NULL ) {
 		if (strcmp(params.getPreviewFormat(), (const char *) CameraParameters::PIXEL_FORMAT_YUV420SP) != 0) {
-			LOGE("Only YUV420SP preview is supported");
+			ALOGE("Only YUV420SP preview is supported");
 			return -EINVAL;
 		}
 	}
 
-	LOGV("PictureFormat %s", params.getPictureFormat());
+	ALOGV("PictureFormat %s", params.getPictureFormat());
 	if ( params.getPictureFormat() != NULL ) {
 		if (strcmp(params.getPictureFormat(), (const char *) CameraParameters::PIXEL_FORMAT_JPEG) != 0) {
-			LOGE("Only jpeg still pictures are supported");
+			ALOGE("Only jpeg still pictures are supported");
 			return -EINVAL;
 		}
 	}
@@ -1288,7 +1288,7 @@ void CameraHardware::CreateExif(unsigned char* pInThumbnailData,int Inthumbsize,
 			//			ExifInfo.flash = 32;		// bit 5 - No flash function.
 			//		else
 			{
-				LOGD("createExif - flashmode = %d flash result = %d", mPreviousFlashMode, ExifInfo.flash);
+				ALOGD("createExif - flashmode = %d flash result = %d", mPreviousFlashMode, ExifInfo.flash);
 
 				// bit 0
 				ExifInfo.flash = ExifInfo.flash | exifobj.flash;
@@ -1858,13 +1858,13 @@ double CameraHardware::getGPSLatitude() const
 			gpsLatitudeValue = atof(mParameters.get(mParameters.KEY_GPS_LATITUDE));
 			if(gpsLatitudeValue != 0)
 			{
-				LOGD("getGPSLatitude = %2.2f \n", gpsLatitudeValue);
+				ALOGD("getGPSLatitude = %2.2f \n", gpsLatitudeValue);
 			}
 			return gpsLatitudeValue;
 		}
 		else
 		{
-			LOGD("getGPSLatitude null \n");
+			ALOGD("getGPSLatitude null \n");
 			return 0;
 		}
 }
@@ -1877,13 +1877,13 @@ double CameraHardware::getGPSLongitude() const
 			gpsLongitudeValue = atof(mParameters.get(mParameters.KEY_GPS_LONGITUDE));
 			if(gpsLongitudeValue != 0)
 			{
-				LOGD("getGPSLongitude = %2.2f \n", gpsLongitudeValue);
+				ALOGD("getGPSLongitude = %2.2f \n", gpsLongitudeValue);
 			}
 			return gpsLongitudeValue;
 		}
 		else
 		{
-			LOGD("getGPSLongitude null \n");
+			ALOGD("getGPSLongitude null \n");
 			return 0;
 		}
 }
@@ -1896,13 +1896,13 @@ double CameraHardware::getGPSAltitude() const
 			gpsAltitudeValue = atof(mParameters.get(mParameters.KEY_GPS_ALTITUDE));
 			if(gpsAltitudeValue != 0)
 			{
-				LOGD("getGPSAltitude = %2.2f \n", gpsAltitudeValue);
+				ALOGD("getGPSAltitude = %2.2f \n", gpsAltitudeValue);
 			}
 			return gpsAltitudeValue;
 		}
 		else
 		{
-			LOGD("getGPSAltitude null \n");
+			ALOGD("getGPSAltitude null \n");
 			return 0;
 		}
 }
