@@ -19,6 +19,7 @@ PRODUCT_COPY_FILES := \
 	device/samsung/galaxysl/etc/nvram_net.txt:system/etc/nvram_net.txt \
 	device/samsung/galaxysl/etc/gps.xml:system/vendor/etc/gps.xml \
 	device/samsung/galaxysl/etc/vold.fstab:system/etc/vold.fstab \
+	device/samsung/galaxysl/etc/media_codecs.xml:system/etc/media_codecs.xml \
 	device/samsung/galaxysl/egl.cfg:system/lib/egl/egl.cfg
 
 # Init files
@@ -136,6 +137,9 @@ PRODUCT_PACKAGES += \
 	hcitool hciattach hcidump \
 	libaudioutils audio.a2dp.default audio_policy.latona \
 	libaudiohw_legacy audio.primary.omap3
+
+PRODUCT_COPY_FILES += \
+    device/samsung/galaxysl/libaudio/audio_policy.conf:system/etc/audio_policy.conf
 
 # HWComposer
 PRODUCT_PACKAGES += hwcomposer.default
