@@ -191,8 +191,8 @@ on post-fs-data
     mkdir /data/misc/dhcp 0770 dhcp dhcp
 
 # change permission for uart_switch
-    chown radio radio /sys/class/sec/uart_switch/UART_SEL/value
-    chmod 660 /sys/class/sec/uart_switch/UART_SEL/value
+    chown radio radio /sys/devices/platform/switch-sio/uart_sel
+    chmod 660 /sys/devices/platform/switch-sio/uart_sel
 
 # create data/gps for GPS demon
     mkdir /data/gps 771 gps system
