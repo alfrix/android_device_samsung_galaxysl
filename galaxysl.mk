@@ -16,7 +16,6 @@
 PRODUCT_COPY_FILES := \
 	device/samsung/galaxysl/etc/asound.conf:system/etc/asound.conf \
 	device/samsung/galaxysl/etc/gps.conf:system/etc/gps.conf \
-	device/samsung/galaxysl/etc/nvram_net.txt:system/etc/nvram_net.txt \
 	device/samsung/galaxysl/etc/gps.xml:system/vendor/etc/gps.xml \
 	device/samsung/galaxysl/etc/vold.fstab:system/etc/vold.fstab \
 	device/samsung/galaxysl/etc/media_codecs.xml:system/etc/media_codecs.xml \
