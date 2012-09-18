@@ -99,6 +99,8 @@ public:
     //static wp<CameraHardwareInterface> singleton;
 
 private:
+    status_t    startPreviewInternal();
+    void stopPreviewInternal();
 
     static const int kBufferCount = 6;
 
@@ -120,9 +122,8 @@ private:
             run("CameraPreviewThread", PRIORITY_URGENT_DISPLAY);
         }
         virtual bool threadLoop() {
-            mHardware->previewThread();
-            // loop until we need to quit
-            return true;
+            mHardware->previewThreadWrapper();
+            return false;
         }
     };
 
@@ -161,7 +162,6 @@ private:
 	double getGPSAltitude() const;
 	void setSkipFrame(int frame);
 
-    int previewThread();
 	/* validating supported size */
 	bool validateSize(size_t width, size_t height,
 			const supported_resolution *supRes, size_t count);
@@ -192,7 +192,6 @@ private:
             int mSkipFrame;
 
     V4L2Camera         *mCamera;
-    bool                mPreviewRunning;	
     int                 mPreviewFrameSize;
 
 	int mPreviewWidth;
@@ -206,11 +205,21 @@ private:
     	mutable Condition mFocusCondition;
     	bool 	 	mExitAutoFocusThread;
 
+    /* used by preview thread to block until it's told to run */
+    mutable Condition   mPreviewCondition;
+    mutable Condition   mPreviewStoppedCondition;
+            bool        mPreviewRunning;
+            bool        mPreviewStartDeferred;
+            bool        mExitPreviewThread;
+
     sp<AutoFocusThread> mAutoFocusThread;
             int autoFocusThread();
 
     /* protected by mLock */
     sp<PreviewThread>   mPreviewThread;
+    int         previewThread();
+    int         previewThreadWrapper();
+
 
     sp<PictureThread> mPictureThread;
             int pictureThread();
