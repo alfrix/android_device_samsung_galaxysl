@@ -128,12 +128,16 @@ PRODUCT_PACKAGES := \
     lights.latona \
     com.android.future.usb.accessory \
     bdaddr_read \
-    utility_make_ext4fs \
     bootmenu_busybox \
     SamsungServiceMode \
     DeviceParts \
     SoundRecorder \
     VoiceDialer
+
+#Filesystem binaries
+PRODUCT_PACKAGES += \
+    bml_over_mtd \
+    utility_make_ext4fs
 
 # ICS sound
 PRODUCT_PACKAGES += \
@@ -235,13 +239,6 @@ include frameworks/native/build/phone-hdpi-512-dalvik-heap.mk
 # PRODUCT_LOCALES expansion must not be a density.
 PRODUCT_LOCALES := hdpi
 
-# kernel modules for ramdisk
-PRODUCT_COPY_FILES += \
-	$(call find-copy-subdir-files,*,device/samsung/galaxysl/modules/ramdisk,root/lib/modules)
-
-PRODUCT_COPY_FILES += \
-	$(call find-copy-subdir-files,*,device/samsung/galaxysl/modules/ramdisk,recovery/root/lib/modules)
-
 # other kernel modules not in ramdisk
 PRODUCT_COPY_FILES += $(foreach module,\
 	$(filter-out $(RAMDISK_MODULES),$(wildcard device/samsung/galaxysl/modules/*.ko)),\
@@ -250,6 +247,10 @@ PRODUCT_COPY_FILES += $(foreach module,\
 # copy the filesystem converter
 PRODUCT_COPY_FILES += \
 	device/samsung/galaxysl/updater.sh:updater.sh
+
+# bml_over_mtd
+PRODUCT_COPY_FILES += \
+device/samsung/galaxysl/bml_over_mtd.sh:bml_over_mtd.sh
 
 # See comment at the top of this file. This is where the other
 # half of the device-specific product definition file takes care
