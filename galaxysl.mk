@@ -88,7 +88,8 @@ PRODUCT_COPY_FILES += \
  
 # configuration files
 PRODUCT_COPY_FILES += \
-    device/samsung/galaxysl/etc/media_profiles.xml:system/etc/media_profiles.xml
+    device/samsung/galaxysl/etc/media_profiles.xml:system/etc/media_profiles.xml \
+    device/samsung/galaxysl/etc/media_codecs.xml:system/etc/media_codecs.xml
 
 #Bluetooth configuration files
 PRODUCT_COPY_FILES += \
@@ -96,14 +97,14 @@ PRODUCT_COPY_FILES += \
 
 # Prebuilt kl keymaps
 PRODUCT_COPY_FILES += \
-	device/samsung/galaxysl/usr/keylayout/sec_jack.kl:system/usr/keylayout/sec_jack.kl \
-	device/samsung/galaxysl/usr/keylayout/sec_key.kl:system/usr/keylayout/sec_key.kl \
-	device/samsung/galaxysl/usr/keylayout/sec_power_key.kl:system/usr/keylayout/sec_power_key.kl \
-	device/samsung/galaxysl/usr/keylayout/sec_touchscreen.kl:system/usr/keylayout/sec_touchscreen.kl
-
-# IDC file for Touchscreen Calibration
+       device/samsung/galaxysl/usr/keylayout/sec_jack.kl:system/usr/keylayout/sec_jack.kl \
+       device/samsung/galaxysl/usr/keylayout/sec_key.kl:system/usr/keylayout/sec_key.kl \
+       device/samsung/galaxysl/usr/keylayout/sec_power_key.kl:system/usr/keylayout/sec_power_key.kl \
+       device/samsung/galaxysl/usr/keylayout/sec_touchscreen.kl:system/usr/keylayout/sec_touchscreen.kl
+ 
+ # IDC file for Touchscreen Calibration
 PRODUCT_COPY_FILES += \
-	device/samsung/galaxysl/usr/idc/sec_touchscreen.idc:system/usr/idc/sec_touchscreen.idc
+       device/samsung/galaxysl/usr/idc/sec_touchscreen.idc:system/usr/idc/sec_touchscreen.idc
 
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
@@ -143,7 +144,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	hcitool hciattach hcidump \
 	libaudioutils audio.a2dp.default audio_policy.latona \
-	libaudiohw_legacy audio.primary.omap3
+	libaudiohw_legacy audio.primary.omap3 audio.usb.default
+
+PRODUCT_COPY_FILES += \
+	device/samsung/galaxysl/libaudio/audio_policy.conf:system/etc/audio_policy.conf
 
 PRODUCT_COPY_FILES += \
     device/samsung/galaxysl/libaudio/audio_policy.conf:system/etc/audio_policy.conf
