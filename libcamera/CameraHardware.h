@@ -161,7 +161,6 @@ private:
 	double getGPSLatitude() const;
 	double getGPSLongitude() const;
 	double getGPSAltitude() const;
-	void setSkipFrame(int frame);
 
 	/* validating supported size */
 	bool validateSize(size_t width, size_t height,
