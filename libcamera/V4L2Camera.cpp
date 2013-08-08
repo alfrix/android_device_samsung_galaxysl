@@ -929,7 +929,7 @@ int V4L2Camera::setZoom(int zoom_level)
         return -1;
     }
 
-        if (videoIn->isStreaming) {
+    //if (videoIn->isStreaming) {
 
 	if (mZoomLevel != zoom_level) {
         mZoomLevel = zoom_level;
@@ -938,7 +938,7 @@ int V4L2Camera::setZoom(int zoom_level)
                 return -1;
             }
         }
-	}
+	//}
 
     return 0;
 }
@@ -952,7 +952,7 @@ int V4L2Camera::setWhiteBalance(int white_balance)
         return -1;
     }
 
-	if (videoIn->isStreaming) {
+	//if (videoIn->isStreaming) {
     		if (mWhiteBalance != white_balance) {
         	mWhiteBalance = white_balance;
             if (v4l2_s_ctrl(camHandle, V4L2_CID_WB, white_balance) < 0) {
@@ -960,7 +960,7 @@ int V4L2Camera::setWhiteBalance(int white_balance)
                 return -1;
             }
         }
-	}
+	//}
     return 0;
 }
 int V4L2Camera::getWhiteBalance()
@@ -977,7 +977,7 @@ int V4L2Camera::setSceneMode(int scene_mode)
         return -1;
     }
 
-    if (videoIn->isStreaming) {
+    //if (videoIn->isStreaming) {
 
     if (mSceneMode != scene_mode) {
         mSceneMode = scene_mode;
@@ -986,7 +986,7 @@ int V4L2Camera::setSceneMode(int scene_mode)
                 return -1;
             }
         }
-	}
+	//}
     return 0;
 }
 int V4L2Camera::getSceneMode()
@@ -1003,7 +1003,7 @@ int V4L2Camera::setFocusMode(int focus_mode)
         return -1;
     }
 
-        if (videoIn->isStreaming) {
+    //if (videoIn->isStreaming) {
     	if (mFocusMode != focus_mode) {
        	mFocusMode = focus_mode;
 	     if (v4l2_s_ctrl(camHandle, V4L2_CID_FOCUS_MODE, focus_mode) < 0) {
@@ -1011,7 +1011,7 @@ int V4L2Camera::setFocusMode(int focus_mode)
                 return -1;
             }
         }
-	}
+	//}
     return 0;
 }
 int V4L2Camera::setAEAWBLockUnlock(int ae_lockunlock, int awb_lockunlock)
@@ -1074,7 +1074,7 @@ int V4L2Camera::setISO(int iso_value)
         return -1;
     }
 
-        if (videoIn->isStreaming) {
+    //if (videoIn->isStreaming) {
     	if (mISO != iso_value) {
         mISO = iso_value;
             if (v4l2_s_ctrl(camHandle, V4L2_CID_ISO, iso_value) < 0) {
@@ -1082,7 +1082,7 @@ int V4L2Camera::setISO(int iso_value)
                 return -1;
             }
         }
-    }
+    //}
 
     return 0;
 }
@@ -1099,7 +1099,7 @@ int V4L2Camera::setMetering(int metering_value)
         return -1;
     }
 
-    if (videoIn->isStreaming) {
+    //if (videoIn->isStreaming) {
     if (mMetering != metering_value) {
         mMetering = metering_value;
             if (v4l2_s_ctrl(camHandle, V4L2_CID_PHOTOMETRY, metering_value) < 0) {
@@ -1107,7 +1107,7 @@ int V4L2Camera::setMetering(int metering_value)
                 return -1;
             }
         }
-    }
+    //}
 
     return 0;
 }
@@ -1125,7 +1125,7 @@ int V4L2Camera::setContrast(int contrast_value)
         return -1;
     }
    
-	if (videoIn->isStreaming) {
+	//if (videoIn->isStreaming) {
     	if (mContrast != contrast_value) {
         mContrast = contrast_value;
             if (v4l2_s_ctrl(camHandle, V4L2_CID_CONTRAST, contrast_value) < 0) {
@@ -1133,7 +1133,7 @@ int V4L2Camera::setContrast(int contrast_value)
                 return -1;
             }
         }
-    }
+    //}
 
     return 0;
 }
@@ -1150,7 +1150,7 @@ int V4L2Camera::setSharpness(int sharpness_value)
         ALOGE("ERR(%s):Invalid sharpness_value (%d)", __func__, sharpness_value);
         return -1;
     }
-    if (videoIn->isStreaming) {
+    //if (videoIn->isStreaming) {
     	if (mSharpness != sharpness_value) {
         mSharpness = sharpness_value;
             if (v4l2_s_ctrl(camHandle, V4L2_CID_SHARPNESS, sharpness_value) < 0) {
@@ -1158,7 +1158,7 @@ int V4L2Camera::setSharpness(int sharpness_value)
                 return -1;
             }
         }
-    }
+    //}
 
     return 0;
 }
@@ -1177,7 +1177,7 @@ int V4L2Camera::setSaturation(int saturation_value)
         return -1;
     }
 
-    if (videoIn->isStreaming) {
+    //if (videoIn->isStreaming) {
     	if (mSaturation != saturation_value) {
         mSaturation = saturation_value;
             if (v4l2_s_ctrl(camHandle, V4L2_CID_SATURATION, saturation_value) < 0) {
@@ -1185,7 +1185,7 @@ int V4L2Camera::setSaturation(int saturation_value)
                 return -1;
             }
         }
-    }
+    //}
 
     return 0;
 }
@@ -1205,7 +1205,7 @@ int V4L2Camera::setBrightness(int brightness)
         ALOGE("ERR(%s):Invalid brightness(%d)", __func__, brightness);
         return -1;
     }
-     if (videoIn->isStreaming) {
+    //if (videoIn->isStreaming) {
     	if (mBrightness != brightness) {
         mBrightness = brightness;       
             if (v4l2_s_ctrl(camHandle, V4L2_CID_BRIGHTNESS, brightness) < 0) {
@@ -1213,7 +1213,7 @@ int V4L2Camera::setBrightness(int brightness)
                 return -1;
             }
         }
-	}
+	//}
     return 0;
 }
 
@@ -1232,7 +1232,7 @@ int V4L2Camera::setImageEffect(int image_effect)
         return -1;
     }
 
-    if (videoIn->isStreaming) {
+    //if (videoIn->isStreaming) {
         if (mEffect != image_effect) {
             mEffect = image_effect;
             if (v4l2_s_ctrl(camHandle, V4L2_CID_EFFECT, image_effect) < 0) {
@@ -1240,7 +1240,7 @@ int V4L2Camera::setImageEffect(int image_effect)
                 return -1;
             }
         }
-    }
+    //}
 
     return 0;
 }
