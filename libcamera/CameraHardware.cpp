@@ -72,10 +72,6 @@ static int mDebugFps = 0;
 static int mCameraID = 0;
 int version = 0;
 
-static int processedFrames = 0;
-static int framesToSkipHD;
-static int framesToSkip;
-
 namespace android {
 
 static int buffersQueued = 0;
@@ -171,14 +167,6 @@ CameraHardware::CameraHardware(int CameraID)
     property_get("debug.camera.showfps", value, "0");
     mDebugFps = atoi(value);
     ALOGD_IF(mDebugFps, "showfps enabled");
-
-    property_get("camera.720.fps", value, "4");
-    framesToSkipHD = atoi(value);
-    ALOGI("720p frames to skip: %d", framesToSkipHD);
-
-    property_get("camera.480.fps", value, "1");
-    framesToSkip = atoi(value);
-    ALOGI("480p frames to skip: %d", framesToSkip);
 
     // Disable ISP resizer (use DSS resizer)
     system("echo 0 > "
@@ -578,7 +566,6 @@ int CameraHardware::previewThread()
     nsecs_t timestamp;
     void *tempbuf;
     int width, height, framesize_yuv;
-    int previewFramesToSkip;
 
     mParameters.getPreviewSize(&width, &height);
 
@@ -596,24 +583,6 @@ int CameraHardware::previewThread()
     }
 
     timestamp = systemTime(SYSTEM_TIME_MONOTONIC);
-
-    if (mRecordingEnabled && height > 500) {
-        previewFramesToSkip = framesToSkipHD;
-    }
-    else {
-        // 720p: half preview framerate
-        previewFramesToSkip = 1;
-    }
-
-    if (mRecordingEnabled || height > 500) {
-        // lower preview framerate
-        if (processedFrames < previewFramesToSkip) {
-            processedFrames++;
-            goto callbacks;
-        } else {
-            processedFrames = 0;
-        }
-    }
 
     if (mNativeWindow && mGrallocHal) {
         buffer_handle_t *buf_handle;
@@ -748,8 +717,6 @@ status_t CameraHardware::startPreview()
     if (ret == OK)
         mPreviewCondition.signal();
 
-    processedFrames = 0;
-
     mPreviewLock.unlock();
     return ret;
 }
@@ -831,7 +798,6 @@ status_t CameraHardware::startRecording()
     // Boost DSP OPP to highest level
     SetDSPKHz(DSP3630_KHZ_MAX);
 
-    processedFrames = 0;
     buffersQueued = 0;
 
     mRecordingEnabled = true;
